@@ -217,7 +217,7 @@ function App() {
           taskDescription={task.description} 
           lengthSelected={task.time} 
           priority={task.priority}> 
-          </TaskCard>
+          </TaskCard> 
 
         })}
         {/* <DocModal /> */}
