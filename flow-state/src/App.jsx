@@ -9,7 +9,7 @@ function TaskButton({ text, handleClick }) {
 }
 
 function TaskModal({
-  value, 
+  value,
   name, // task name
   description, // task description
   handleClose,
@@ -73,7 +73,6 @@ function TaskModal({
 
 function TaskCard({
   taskName,
-  taskValue,
   taskDescription,
   lengthSelected,
   priority,
@@ -129,12 +128,16 @@ function TaskCard({
 //   )
 // }
 
+// List of Tasks
+//  let taskList = [];
+
 function App() {
-  // List of Tasks
-  let taskList = [];
+
 
   const [createTask, setCreateTask] = useState(false);
-  const [task, setTask] = useState({name: "", description: "", priority: "", time: ""});
+  const [task, setTask] = useState({ name: "", description: "", priority: "", time: "" });
+  const [taskList, setTaskList] = useState([])
+  const [key, setKey] = useState(0)
 
   const handleCreateTask = () => {
     setCreateTask(true);
@@ -145,29 +148,43 @@ function App() {
   };
 
   const updateNameField = (e) => {
-    const newTask = {...task, name:e.target.value}
+    const newTask = { ...task, name: e.target.value }
     setTask(newTask)
   }
 
   const updateDescField = (e) => {
-    const newTask = {...task, description:e.target.value}
+    const newTask = { ...task, description: e.target.value }
     setTask(newTask)
   }
 
 
   const updatePriorityField = (e) => {
-    const newTask = {...task, priority:e.target.value}
+    const newTask = { ...task, priority: e.target.value }
     setTask(newTask)
   }
 
 
   const updateTimeField = (e) => {
-    const newTask = {...task, time:e.target.value}
+    const newTask = { ...task, time: e.target.value }
     setTask(newTask)
   }
 
+  // For checking 
+  // const submitTask = () => {
+  //    taskList.push(task)
+  //    console.log(task)
+  //    console.log(taskList)
+  // }
+
+  
+
   const submitTask = () => {
-    
+    const newTask = {...task, id: crypto.randomUUID()}
+    const newTasks = [...taskList, newTask]
+    setTaskList(newTasks)
+    console.log(newTasks)
+
+
   }
 
 
@@ -183,16 +200,26 @@ function App() {
         </div>
         {/* <TaskModal /> */}
         {createTask
-         && 
-         <TaskModal 
-          onNameChange={updateNameField}
-          onDescripChange={updateDescField}
-          onPriorityChange={updatePriorityField}
-          onTimeChange={updateTimeField}
-         handleClose={deleteCreateTask} 
+          &&
+          <TaskModal
+            onNameChange={updateNameField}
+            onDescripChange={updateDescField}
+            onPriorityChange={updatePriorityField}
+            onTimeChange={updateTimeField}
+            handleClose={deleteCreateTask}
+            handleSubmit={submitTask}
+          />}
 
-        />}
-        {/* <TaskCard /> */}
+        {taskList.map((task) => {
+          return <TaskCard 
+          key={task.id}
+          taskName={task.name} 
+          taskDescription={task.description} 
+          lengthSelected={task.time} 
+          priority={task.priority}> 
+          </TaskCard>
+
+        })}
         {/* <DocModal /> */}
       </div>
     </>
